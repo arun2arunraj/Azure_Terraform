@@ -10,7 +10,7 @@ resource "random_string" "system_generated_password" {
 }
 
 resource "azurerm_sql_server" "terraform_stage_test_mssql" {
-	name	= "muw1-support-vss-prod-mssql"
+	name	= "${var.ms_sql_server_name}"
 	resource_group_name = "${var.resource_group_name}"
 	location = "${var.location}"
 	version = "${var.ms_sql_version}"
@@ -32,16 +32,15 @@ resource "azurerm_sql_firewall_rule" "terraform_stage_test_mssql" {
 	name = "Admin VPN East"
 	resource_group_name = "${var.resource_group_name}"
 	server_name = "${azurerm_sql_server.terraform_stage_test_mssql.name}"
-	start_ip_address = "155.64.38.0"
-	end_ip_address = "155.64.38.255"
+	start_ip_address = "155.64.3.0"
+	end_ip_address = "155.64.3.255"
 }
 
 resource "azurerm_sql_virtual_network_rule" "stage_test_sqlvnetrule" {
 	name = "sql-app-net-rule"
 	resource_group_name = "${var.resource_group_name}"
 	server_name = "${azurerm_sql_server.terraform_stage_test_mssql.name}"
-	#subnet_id   = "/subscriptions/ddc8a925-a11f-47ed-a226-2ecf7d90611f/resourceGroups/MUSW1-NN01-N001/providers/Microsoft.Network/networkSecurityGroups/App-NSG"
-	subnet_id  = "/subscriptions/bb85c717-5fcd-4e76-9fc5-b2b1c1c05809/resourceGroups/MUSW1-NP02-N001/providers/Microsoft.Network/networkSecurityGroups/App-NSG"
+	subnet_id  = "/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Network/networkSecurityGroups/{network_security_group_name}"
 }
 
 resource "azurerm_sql_database" "terraform_stage_test_mssql" {

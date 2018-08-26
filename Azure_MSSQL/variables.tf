@@ -26,6 +26,8 @@ variable "resource_group_name" {
 	description = "Resource group name that will contain various resources"
 }
 
+variable "ms_sql_server_name" {
+	description = "Enter the MS SQL server name "
 variable "admin_username" {
 	description = "Enter admin username for Admin access"
 }
